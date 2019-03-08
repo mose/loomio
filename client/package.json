@@ -5,7 +5,9 @@
   "main": "gulpfile.coffee",
   "scripts": {
     "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "e2e": "npx nightwatch --config test/nightwatch.core.json",
+    "e2e-plugins": "npx nightwatch --config test/nightwatch.plugins.json"
   },
   "engines": {
     "npm": ">= 2.14.20",
@@ -91,6 +93,7 @@
     "globby": "^8.0.1",
     "hamljs": "^0.6.2",
     "mini-css-extract-plugin": "^0.5.0",
+    "nightwatch": "^1.0.19",
     "node-sass": "^4.11.0",
     "node-yaml-config": "0.0.4",
     "null-loader": "^0.1.1",
