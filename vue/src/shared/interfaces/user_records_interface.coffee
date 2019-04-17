@@ -1,6 +1,10 @@
 import BaseRecordsInterface from '@/shared/record_store/base_records_interface'
 import UserModel            from '@/shared/models/user_model'
 
+import _merge from 'lodash/merge'
+import _pickBy from 'lodash/pickBy'
+import _identity from 'lodash/identity'
+
 export default class UserRecordsInterface extends BaseRecordsInterface
   model: UserModel
   apiEndPoint: 'profile'
@@ -15,7 +19,7 @@ export default class UserRecordsInterface extends BaseRecordsInterface
         "#{model.constructor.singular}_id": model.id
 
   updateProfile: (user) =>
-    @remote.post 'update_profile', _.merge(user.serialize(), {unsubscribe_token: user.unsubscribeToken })
+    @remote.post 'update_profile', _merge(user.serialize(), {unsubscribe_token: user.unsubscribeToken })
 
   uploadAvatar: (file) =>
     @remote.upload 'upload_avatar', file
@@ -37,4 +41,4 @@ export default class UserRecordsInterface extends BaseRecordsInterface
   emailStatus: (email, token) ->
     @fetch
       path: 'email_status'
-      params: _.pickBy({email: email, token: token}, _.identity)
+      params: _pickBy({email: email, token: token}, _identity)

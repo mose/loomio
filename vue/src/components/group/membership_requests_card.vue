@@ -38,6 +38,8 @@ md-list-item.membership-requests-card__request {
 import Records        from '@/shared/services/records'
 import AbilityService from '@/shared/services/ability_service'
 import urlFor         from '@/mixins/url_for'
+import _slice         from 'lodash/slice'
+import _orderBy         from 'lodash/orderBy'
 
 export default
   mixins: [urlFor]
@@ -48,7 +50,7 @@ export default
       Records.membershipRequests.fetchPendingByGroup(@group.key)
   methods:
     orderedPendingMembershipRequests: ->
-      _.slice(_.orderBy(@group.pendingMembershipRequests(), 'createdAt', 'desc'), 0, 5)
+      _slice(_orderBy(@group.pendingMembershipRequests(), 'createdAt', 'desc'), 0, 5)
 
     canManageMembershipRequests: ->
       AbilityService.canManageMembershipRequests(@group)

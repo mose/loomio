@@ -7,26 +7,34 @@ import FlashService   from '@/shared/services/flash_service'
 import { fieldFromTemplate } from '@/shared/helpers/poll'
 import { scrollTo }          from '@/shared/helpers/layout'
 
+import _invokeMap from 'lodash/invokeMap'
+import _merge from 'lodash/merge'
+import _map from 'lodash/map'
+import _includes from 'lodash/includes'
+import _forEach from 'lodash/forEach'
+import _keys from 'lodash/keys'
+import _find from 'lodash/find'
+
 # a helper to aid submitting forms throughout the app
 export submitForm = (scope, model, options = {}) ->
   submit(scope, model, options)
 
 export submitDiscussion = (scope, model, options = {}) ->
-  submit(scope, model, _.merge(
+  submit(scope, model, _merge(
     submitFn: if model.isForking() then model.fork else model.save
     flashSuccess: "discussion_form.messages.#{actionName(model)}"
     failureCallback: ->
       scrollTo '.lmo-validation-error__message', container: '.discussion-modal'
     successCallback: (data) ->
-      _.invokeMap Records.documents.find(model.removedDocumentIds), 'remove'
+      _invokeMap Records.documents.find(model.removedDocumentIds), 'remove'
       if model.isForking()
         model.forkTarget().discussion().forkedEventIds = []
-        _.invokeMap Records.events.find(model.forkedEventIds), 'remove'
+        _invokeMap Records.events.find(model.forkedEventIds), 'remove'
       nextOrSkip(data, scope, model)
   , options))
 
 export submitOutcome = (scope, model, options = {}) ->
-  submit(scope, model, _.merge(
+  submit(scope, model, _merge(
     flashSuccess: "poll_common_outcome_form.outcome_#{actionName(model)}"
     failureCallback: ->
       scrollTo '.lmo-validation-error__message', container: '.poll-common-modal'
@@ -35,7 +43,7 @@ export submitOutcome = (scope, model, options = {}) ->
   , options))
 
 export submitStance = (scope, model, options = {}) ->
-  submit(scope, model, _.merge(
+  submit(scope, model, _merge(
     flashSuccess: "poll_#{model.poll().pollType}_vote_form.stance_#{actionName(model)}"
     prepareFn: ->
       EventBus.$emit 'processing'
@@ -48,7 +56,7 @@ export submitStance = (scope, model, options = {}) ->
   , options))
 
 export submitPoll = (scope, model, options = {}) ->
-  submit(scope, model, _.merge(
+  submit(scope, model, _merge(
     flashSuccess: "poll_#{model.pollType}_form.#{model.pollType}_#{actionName(model)}"
     prepareFn: =>
       EventBus.$emit 'processing'
@@ -56,7 +64,7 @@ export submitPoll = (scope, model, options = {}) ->
       switch model.pollType
         # for polls with default poll options (proposal, check)
         when 'proposal', 'count'
-          model.pollOptionNames = _.map fieldFromTemplate(model.pollType, 'poll_options_attributes'), 'name'
+          model.pollOptionNames = _map fieldFromTemplate(model.pollType, 'poll_options_attributes'), 'name'
         # for polls with user-specified poll options (poll, dot_vote, ranked_choice, meeting
         when 'meeting'
           model.customFields.can_respond_maybe = model.canRespondMaybe
@@ -66,7 +74,7 @@ export submitPoll = (scope, model, options = {}) ->
     failureCallback: ->
       scrollTo '.lmo-validation-error__message', container: '.poll-common-modal'
     successCallback: (data) ->
-      _.invokeMap Records.documents.find(model.removedDocumentIds), 'remove'
+      _invokeMap Records.documents.find(model.removedDocumentIds), 'remove'
       model.removeOrphanOptions()
       nextOrSkip(data, scope, model)
     cleanupFn: ->
@@ -74,7 +82,7 @@ export submitPoll = (scope, model, options = {}) ->
   , options))
 
 export submitMembership = (scope, model, options = {}) ->
-  submit(scope, model, _.merge(
+  submit(scope, model, _merge(
     flashSuccess: "membership_form.#{actionName(model)}"
     successCallback: -> EventBus.$emit '$close'
   , options))
@@ -158,7 +166,7 @@ failure = (scope, model, options) ->
   (response) ->
     # FlashService.dismiss()
     options.failureCallback(response) if typeof options.failureCallback is 'function'
-    setErrors(scope, model, response) if _.includes([401, 422], response.status)
+    setErrors(scope, model, response) if _includes([401, 422], response.status)
     EventBus.$emit errorTypes[response.status] or 'unknownError',
       model: model
       response: response
@@ -173,12 +181,12 @@ cleanup = (scope, model, options = {}) ->
     scope.percentComplete = 0 if scope.percentComplete
 
 calculateFlashOptions = (options) ->
-  _.each _.keys(options), (key) ->
+  _forEach _keys(options), (key) ->
     options[key] = options[key]() if typeof options[key] is 'function'
   options
 
 nextOrSkip = (data, scope, model) ->
-  eventData = _.find(data.events, (event) -> event.kind == eventKind(model)) || {}
+  eventData = _find(data.events, (event) -> event.kind == eventKind(model)) || {}
   if event = Records.events.find(eventData.id)
     EventBus.$emit 'nextStep', event
   else

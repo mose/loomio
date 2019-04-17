@@ -4,6 +4,7 @@ import EventBus       from '@/shared/services/event_bus'
 import AbilityService from '@/shared/services/ability_service'
 import ModalService   from '@/shared/services/modal_service'
 import urlFor         from '@/mixins/url_for'
+import _isEmpty       from 'lodash/isEmpty'
 
 export default
   mixins: [urlFor]
@@ -24,7 +25,7 @@ export default
     canPerformActions: ->
       AbilityService.isSiteAdmin() or AbilityService.canLeaveGroup(@group)
     canUploadPhotos: ->
-      !_.isEmpty(@homePage) and AbilityService.canAdministerGroup(@group)
+      !_isEmpty(@homePage) and AbilityService.canAdministerGroup(@group)
 </script>
 
 <template lang="pug">

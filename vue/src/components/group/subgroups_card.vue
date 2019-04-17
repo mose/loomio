@@ -5,6 +5,7 @@ import AbilityService from '@/shared/services/ability_service'
 import ModalService   from '@/shared/services/modal_service'
 import urlFor         from '@/mixins/url_for'
 import truncate       from '@/mixins/truncate'
+import _sortBy        from 'lodash/sortBy'
 
 export default
   mixins: [urlFor, truncate]
@@ -15,7 +16,7 @@ export default
       EventBus.$emit 'subgroupsLoaded', @group
   methods:
     orderedSubgroups: ->
-      _.sortBy @group.subgroups(), 'name'
+      _sortBy @group.subgroups(), 'name'
 
     show: ->
       @group.isParent()

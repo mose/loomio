@@ -24,6 +24,8 @@ import AbilityService from '@/shared/services/ability_service'
 import ModalService   from '@/shared/services/modal_service'
 import _isEmpty  from 'lodash/isEmpty'
 import _debounce from 'lodash/debounce'
+import _filter   from 'lodash/filter'
+import _some   from 'lodash/some'
 import { applyLoadingFunction } from '@/shared/helpers/apply'
 
 export default
@@ -47,8 +49,8 @@ export default
     , 250
 
     documents: (filter) ->
-      _.filter @group.allDocuments(), (doc) =>
-        _.isEmpty(@fragment) or doc.title.match(///#{@fragment}///i)
+      _filter @group.allDocuments(), (doc) =>
+        _isEmpty(@fragment) or doc.title.match(///#{@fragment}///i)
 
     addDocument: ->
       ModalService.open 'DocumentModal', doc: =>
@@ -58,7 +60,7 @@ export default
 
   computed:
     hasDocuments: ->
-      _.some @documents()
+      _some @documents()
 
     canAdministerGroup: ->
       AbilityService.canAdministerGroup(@group)

@@ -1,6 +1,10 @@
 import AppConfig from '@/shared/services/app_config'
 import Records   from '@/shared/services/records'
 
+import _compact from 'lodash/compact'
+import _head from 'lodash/head'
+import _sortBy from 'lodash/sortBy'
+
 # A series of helpers for interacting with polls, such as template values for a
 # particular poll or getting the last stance from a given user
 export fieldFromTemplate = (pollType, field) ->
@@ -10,7 +14,7 @@ export iconFor = (poll) ->
   fieldFromTemplate(poll.pollType, 'material_icon')
 
 export settingsFor = (poll) ->
-  _.compact [
+  _compact [
     ('multipleChoice'        if poll.pollType == 'poll'),
     'notifyOnParticipate',
     ('canRespondMaybe'       if poll.pollType == 'meeting' && poll.isNew()),
@@ -20,7 +24,7 @@ export settingsFor = (poll) ->
   ]
 
 export myLastStanceFor = (poll) ->
-  _.head _.sortBy(Records.stances.find(
+  _head _sortBy(Records.stances.find(
     latest: true
     pollId: poll.id
     participantId: AppConfig.currentUserId

@@ -15,6 +15,8 @@ import EventBus      from '@/shared/services/event_bus'
 import InboxService  from '@/shared/services/inbox_service'
 import ModalService  from '@/shared/services/modal_service'
 import urlFor        from '@/mixins/url_for'
+import _keys         from 'lodash/keys'
+import _sortBy       from 'lodash/sortBy'
 
 export default
   mixins: [urlFor]
@@ -34,7 +36,7 @@ export default
       !InboxService.loaded
 
     groups: ->
-      Records.groups.find(_.keys(@views))
+      Records.groups.find(_keys(@views))
 
     hasThreads: ->
       InboxService.unreadCount() > 0
@@ -43,7 +45,7 @@ export default
       !Session.user().hasAnyGroups()
 
     orderedGroups: ->
-      _.sortBy @groups, 'name'
+      _sortBy @groups, 'name'
 </script>
 
 <template lang="pug">

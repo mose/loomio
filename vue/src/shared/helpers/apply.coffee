@@ -2,6 +2,9 @@ import EventBus      from '@/shared/services/event_bus'
 import LmoUrlService from '@/shared/services/lmo_url_service'
 import Session       from '@/shared/services/session'
 import AppConfig   from '@/shared/services/app_config'
+import _without from 'lodash/without'
+import _head from 'lodash/head'
+import _indexOf from 'lodash/indexOf'
 
 # a series of helpers which attaches functionality to a scope, such as performing
 # a sequence of steps, or loading for a particular function
@@ -11,7 +14,7 @@ export obeyMembersCanAnnounce = (steps, group) ->
   if Session.user().isAdminOf?(group) or (group && group.membersCanAnnounce)
     steps
   else
-    _.without(steps, 'announce')
+    _without(steps, 'announce')
 
 export applyLoadingFunction = (scope, functionName) ->
   executing = "#{functionName}Executing"
@@ -50,9 +53,9 @@ export applyDiscussionStartSequence = (scope, options = {}) ->
 
 applySequence = (scope, options) ->
   scope.steps = if typeof options.steps is 'function' then options.steps() else options.steps
-  scope.currentStep = options.initialStep or _.head(scope.steps)
+  scope.currentStep = options.initialStep or _head(scope.steps)
 
-  scope.currentStepIndex = -> _.indexOf scope.steps, scope.currentStep
+  scope.currentStepIndex = -> _indexOf scope.steps, scope.currentStep
 
   scope.progress = ->
     return unless scope.steps.length > 1

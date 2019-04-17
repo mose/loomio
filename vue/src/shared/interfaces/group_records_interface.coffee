@@ -1,12 +1,13 @@
 import BaseRecordsInterface from '@/shared/record_store/base_records_interface'
 import GroupModel           from '@/shared/models/group_model'
+import _head from 'lodash/head'
 
 export default class GroupRecordsInterface extends BaseRecordsInterface
   model: GroupModel
 
   fuzzyFind: (id) ->
     # could be id or key or handle
-    @find(id) || _.head(@find(handle: id))
+    @find(id) || _head(@find(handle: id))
 
   findOrFetch: (id, options = {}, ensureComplete = false) ->
     record = @fuzzyFind(id)

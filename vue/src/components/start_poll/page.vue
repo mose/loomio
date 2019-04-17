@@ -18,6 +18,7 @@ import LmoUrlService from '@/shared/services/lmo_url_service'
 import { listenForLoading }       from '@/shared/helpers/listen'
 import { iconFor }                from '@/shared/helpers/poll'
 import { applyPollStartSequence } from '@/shared/helpers/apply'
+import _compact from 'lodash/compact'
 
 export default
   data: ->
@@ -26,7 +27,7 @@ export default
       pollType:    @$route.params.poll_type
       groupId:     parseInt(@$route.params.group_id)
       customFields:
-        pending_emails: _.compact((@$route.params.pending_emails || "").split(','))
+        pending_emails: _compact((@$route.params.pending_emails || "").split(','))
   created: ->
     EventBus.$emit 'currentComponent', { page: 'startPollPage', skipScroll: true }
     Records.groups.findOrFetch(@$route.params.group_id).then =>

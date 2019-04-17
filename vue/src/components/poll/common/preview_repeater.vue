@@ -1,11 +1,12 @@
 <script lang="coffee">
+import _sortBy from 'lodash/sortBy'
 export default
   props:
     pollsPage: Object
     displayGroupName: Boolean
   computed:
     orderedPolls: ->
-      _.sortBy(@pollsPage.pollCollection.polls(), @pollsPage.pollImportance)
+      _sortBy(@pollsPage.pollCollection.polls(), @pollsPage.pollImportance)
 
 </script>
 

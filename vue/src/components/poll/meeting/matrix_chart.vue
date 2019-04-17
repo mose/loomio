@@ -3,6 +3,10 @@
 
 <script lang="coffee">
 import svg from 'svg.js'
+import _each from 'lodash/each'
+import _isEmpty from 'lodash/isEmpty'
+import _times from 'lodash/times'
+import _max from 'lodash/max'
 
 export default
   props:
@@ -16,19 +20,19 @@ export default
     this.draw()
   methods:
     draw: ->
-      _.each this.shapes, (shape) -> shape.remove()
-      if _.isEmpty(this.matrixCounts)
+      _each this.shapes, (shape) -> shape.remove()
+      if _isEmpty(this.matrixCounts)
         this.drawPlaceholder()
       else
         this.drawChart()
     drawChart: ->
-      width = this.size / _.max([this.matrixCounts.length, this.matrixCounts[0].length])
-      _.each this.matrixCounts, (values, row) =>
-        _.each values, (value, col) =>
+      width = this.size / _max([this.matrixCounts.length, this.matrixCounts[0].length])
+      _each this.matrixCounts, (values, row) =>
+        _each values, (value, col) =>
           this.drawShape(row, col, width, value)
     drawPlaceholder: ->
-      _.each _.times(5), (row) =>
-        _.each _.times(5), (col) =>
+      _each _times(5), (row) =>
+        _each _times(5), (col) =>
           this.drawShape(row, col, this.size / 5, 0)
     drawShape: (row, col, width, value) ->
       color = ['#ebebeb','#f3b300','#00e572'][value]

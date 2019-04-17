@@ -190,7 +190,7 @@ export default
 
     fetchMentionable: ->
       Records.users.fetchMentionable(@query, @model).then (response) =>
-        @mentionableUserIds.concat(_.uniq @mentionableUserIds + _.map(response.users, 'id'))
+        @mentionableUserIds.concat(_uniq @mentionableUserIds + _map(response.users, 'id'))
 
     # navigate to the previous item
     # if it's the first item, navigate to the last one

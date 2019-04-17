@@ -28,8 +28,8 @@ export deprecatedBrowser = ->
 
 export exportGlobals = ->
     window.moment  = require 'moment'
-    window._       = require 'lodash'
-    _.extend window._, require '@/shared/helpers/lodash_ext'
+    # window._       = require 'lodash'
+    # _extend window._, require '@/shared/helpers/lodash_ext'
 
 # export initServiceWorker = ->
 #     version = document.querySelector('meta[name=version]').content

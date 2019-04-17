@@ -1,5 +1,6 @@
 <script lang="coffee">
 import PollModalMixin from '@/mixins/poll_modal'
+import _sortBy from 'lodash/sortBy'
 
 export default
   mixins: [
@@ -9,7 +10,7 @@ export default
     stance: Object
   methods:
     orderedStanceChoices: ->
-      _.sortBy @stance.stanceChoices(), 'rank'
+      _sortBy @stance.stanceChoices(), 'rank'
 </script>
 
 <template>

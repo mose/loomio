@@ -69,6 +69,7 @@
 import Records        from '@/shared/services/records'
 import EventBus       from '@/shared/services/event_bus'
 import AbilityService from '@/shared/services/ability_service'
+import _orderBy       from 'lodash/orderBy'
 
 export default
   props:
@@ -92,7 +93,7 @@ export default
       @$store.getters.documentsFor(@model)
 
     orderedDocuments: ->
-      _.orderBy(@$store.getters.newAndPersistedDocumentsFor(@model), ['-createdAt'])
+      _orderBy(@$store.getters.newAndPersistedDocumentsFor(@model), ['-createdAt'])
 
     showTitle: ->
       (@model.showDocumentTitle or @showEdit) and

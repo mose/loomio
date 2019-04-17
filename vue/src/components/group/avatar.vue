@@ -1,4 +1,6 @@
 <script lang="coffee">
+import _includes from 'lodash/includes'
+
 export default
   props:
     group: Object
@@ -6,7 +8,7 @@ export default
   computed:
     csize: ->
       sizes = ['small', 'medium', 'large']
-      if _.includes(sizes, @size)
+      if _includes(sizes, @size)
         @size
       else
         'small'

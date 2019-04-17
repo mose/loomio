@@ -6,6 +6,7 @@ import { scrollTo }            from '@/shared/helpers/layout'
 import { submitForm }          from '@/shared/helpers/form'
 import { groupPrivacyConfirm } from '@/shared/helpers/helptext'
 import { submitOnEnter }       from '@/shared/helpers/keyboard'
+import _some from 'lodash/some'
 
 export default
   props:
@@ -64,7 +65,7 @@ export default
         parent: @group.parentName()
 
     showGroupFeatures: ->
-      AbilityService.isSiteAdmin() and _.some(@featureNames)
+      AbilityService.isSiteAdmin() and _some(@featureNames)
 </script>
 
 <template lang="pug">

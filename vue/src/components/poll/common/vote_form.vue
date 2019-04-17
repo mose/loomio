@@ -3,6 +3,7 @@ import EventBus from '@/shared/services/event_bus'
 import { submitOnEnter } from '@/shared/helpers/keyboard'
 import { submitStance }  from '@/shared/helpers/form'
 import { buttonStyle }   from '@/shared/helpers/style'
+import _sortBy from 'lodash/sortBy'
 
 export default
   props:
@@ -19,7 +20,7 @@ export default
         ]
   methods:
     orderedPollOptions: ->
-      _.sortBy @stance.poll().pollOptions(), 'priority'
+      _sortBy @stance.poll().pollOptions(), 'priority'
 
     isSelected: (option) ->
       @selectedOptionId == option.id

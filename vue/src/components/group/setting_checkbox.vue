@@ -1,4 +1,6 @@
 <script lang="coffee">
+import _snakeCase from 'lodash/snakeCase'
+
 export default
   props:
     group: Object
@@ -6,7 +8,7 @@ export default
     translateValues: Boolean
   computed:
     translateKey: ->
-      "group_form.#{_.snakeCase(@setting)}"
+      "group_form.#{_snakeCase(@setting)}"
 </script>
 
 <template>

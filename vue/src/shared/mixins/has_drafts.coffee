@@ -1,4 +1,10 @@
 import AppConfig from '@/shared/services/app_config'
+import _pick from 'lodash/pick'
+import _snakeCase from 'lodash/snakeCase'
+import _omit from 'lodash/omit'
+import _isEmpty from 'lodash/isEmpty'
+import _invokeMap from 'lodash/invokeMap'
+import _capitalize from 'lodash/capitalize'
 
 export default new class HasDrafts
   apply: (model) ->
@@ -10,7 +16,7 @@ export default new class HasDrafts
       model.recordStore.drafts.findOrBuildFor(parent)
 
     model.draftFields = ->
-       _.pick model, model.constructor.draftPayloadAttributes
+       _pick model, model.constructor.draftPayloadAttributes
 
     model.fetchDraft = ->
       return unless parent = model.draftParent()
@@ -21,8 +27,8 @@ export default new class HasDrafts
 
     model.restoreDraft = ->
       return unless draft = model.draft()
-      payloadField = _.snakeCase(model.constructor.serializationRoot or model.constructor.singular)
-      model.update _.omit(draft.payload[payloadField], _.isEmpty)
+      payloadField = _snakeCase(model.constructor.serializationRoot or model.constructor.singular)
+      model.update _omit(draft.payload[payloadField], _isEmpty)
 
     model.resetDraft = ->
       return unless draft = model.draft()
@@ -34,8 +40,8 @@ export default new class HasDrafts
 
     model.clearDrafts = ->
       return unless parent = model.draftParent()
-      _.invokeMap model.recordStore.drafts.find(
-        draftableType: _.capitalize(parent.constructor.singular)
+      _invokeMap model.recordStore.drafts.find(
+        draftableType: _capitalize(parent.constructor.singular)
         draftableId:   parent.id
       ), 'remove'
 

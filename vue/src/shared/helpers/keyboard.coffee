@@ -2,6 +2,10 @@ import AppConfig      from '@/shared/services/app_config'
 import EventBus       from '@/shared/services/event_bus'
 import AbilityService from '@/shared/services/ability_service'
 
+import _forEach from 'lodash/forEach'
+import _includes from 'lodash/includes'
+import _find from 'lodash/find'
+
 # a series of method related to the user entering input through the keyboard,
 # such as hotkeys or submit on enter
 export broadcastKeyEvent = (scope, event) ->
@@ -13,7 +17,7 @@ export registerKeyEvent = (scope, eventCode, execute, shouldExecute) ->
   registerKeyEvent(scope, eventCode, execute, shouldExecute)
 
 export registerHotkeys = (scope, hotkeys) ->
-  _.each hotkeys, (execute, key) =>
+  _forEach hotkeys, (execute, key) =>
     registerKeyEvent scope, key, execute, (event) ->
       defaultShouldExecute(event) and !AppConfig.currentModal and AbilityService.isLoggedIn()
 
@@ -23,7 +27,7 @@ export submitOnEnter = (scope, opts = {}) ->
     !scope.submitIsDisabled and
     hasActiveElement(opts.element, active) and
     (event.ctrlKey or event.metaKey or opts.anyEnter) and
-    (opts.anyInput or _.includes(active.classList, 'lmo-primary-form-input'))
+    (opts.anyInput or _includes(active.classList, 'lmo-primary-form-input'))
 
 keyboardShortcuts =
   73:  'pressedI'
@@ -43,10 +47,10 @@ keyboardShortcuts =
 # For non-textarea forms (poll, group, discussion, etc.), this simply always returns true.
 hasActiveElement = (element, active) ->
   return true unless element
-  _.find element.find('textarea'), (input) -> active == input
+  _find element.find('textarea'), (input) -> active == input
 
 defaultShouldExecute = (active = {}, event = {}) ->
-  !event.ctrlKey and !event.altKey and !_.includes(['INPUT', 'TEXTAREA', 'SELECT'], active.nodeName)
+  !event.ctrlKey and !event.altKey and !_includes(['INPUT', 'TEXTAREA', 'SELECT'], active.nodeName)
 
 registerKeyEvent = (scope, eventCode, execute, shouldExecute) ->
   scope["#{eventCode}Event"]() if typeof scope["#{eventCode}Event"] is 'function'

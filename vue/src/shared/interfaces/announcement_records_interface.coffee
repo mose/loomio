@@ -1,8 +1,11 @@
 import BaseRecordsInterface from '@/shared/record_store/base_records_interface'
 import AnnouncementModel    from '@/shared/models/announcement_model'
 
+import _includes from 'lodash/includes'
+import _merge from 'lodash/merge'
+
 kindForTarget = (target) ->
-  if _.includes(['poll_edited', 'discussion_edited'], target.kind)
+  if _includes(['poll_edited', 'discussion_edited'], target.kind)
     target.kind
   else
     "#{eventableOrSelf(target).constructor.singular}_announced"
@@ -18,7 +21,7 @@ export default class AnnouncementRecordsInterface extends BaseRecordsInterface
   model: AnnouncementModel
 
   search: (query, model) ->
-    params = _.merge({q: query}, model.namedId())
+    params = _merge({q: query}, model.namedId())
 
     @remote.fetch
       path: 'search'

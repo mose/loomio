@@ -11,6 +11,9 @@
 <script lang="coffee">
 import svg from 'svg.js'
 import AppConfig from '@/shared/services/app_config'
+import _each from 'lodash/each'
+import _sum from 'lodash/sum'
+import _max from 'lodash/sum'
 
 export default
   props:
@@ -22,8 +25,8 @@ export default
   methods:
     draw: ->
       y = 0
-      _.each this.stanceCounts, (count, index) =>
-        height = (this.size * _.max([parseInt(count), 0])) / this.goal
+      _each this.stanceCounts, (count, index) =>
+        height = (this.size * _max([parseInt(count), 0])) / this.goal
         this.svgEl.rect(this.size, height)
             .fill(AppConfig.pollColors.count[index])
             .x(0)
@@ -34,7 +37,7 @@ export default
           .fill("#fff")
           .x(this.size / 4)
           .y(this.size / 4)
-      this.svgEl.text((_.sum(this.stanceCounts) || 0).toString())
+      this.svgEl.text((_sum(this.stanceCounts) || 0).toString())
           .font(size: 16, anchor: 'middle')
           .x(this.size / 2)
           .y((this.size / 4) + 3)

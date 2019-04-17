@@ -5,6 +5,11 @@ import HasDocuments    from '@/shared/mixins/has_documents'
 import HasMentions     from '@/shared/mixins/has_mentions'
 import HasTranslations from '@/shared/mixins/has_translations'
 
+import _capitalize from 'lodash/capitalize'
+import _last from 'lodash/last'
+import _map from 'lodash/map'
+import _invokeMap from 'lodash/invokeMap'
+
 export default class CommentModel extends BaseModel
   @singular: 'comment'
   @plural: 'comments'
@@ -37,7 +42,7 @@ export default class CommentModel extends BaseModel
   reactions: ->
     @recordStore.reactions.find
       reactableId: @id
-      reactableType: _.capitalize(@constructor.singular)
+      reactableType: _capitalize(@constructor.singular)
 
   group: ->
     @discussion().group()
@@ -49,7 +54,7 @@ export default class CommentModel extends BaseModel
     @discussion().memberIds()
 
   isMostRecent: ->
-    _.last(@discussion().comments()) == @
+    _last(@discussion().comments()) == @
 
   isReply: ->
     @parentId?
@@ -61,7 +66,7 @@ export default class CommentModel extends BaseModel
     @recordStore.comments.find(@parentId)
 
   reactors: ->
-    @recordStore.users.find(_.map(@reactions(), 'userId'))
+    @recordStore.users.find(_map(@reactions(), 'userId'))
 
   authorName: ->
     @author().nameWithTitle(@discussion()) if @author()
@@ -73,7 +78,7 @@ export default class CommentModel extends BaseModel
     @author().avatarOrInitials()
 
   beforeDestroy: ->
-    _.invokeMap @recordStore.events.find(kind: 'new_comment', eventableId: @id), 'remove'
+    _invokeMap @recordStore.events.find(kind: 'new_comment', eventableId: @id), 'remove'
 
   edited: ->
     @versionsCount > 1

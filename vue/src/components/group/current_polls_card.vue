@@ -3,6 +3,7 @@ import Records        from '@/shared/services/records'
 import AbilityService from '@/shared/services/ability_service'
 import ModalService   from '@/shared/services/modal_service'
 import { applyLoadingFunction } from '@/shared/helpers/apply'
+import _take from 'lodash/take'
 
 export default
   props:
@@ -14,7 +15,7 @@ export default
     fetchRecords: ->
       Records.polls.fetchFor(@model, status: 'active')
     polls: ->
-      _.take @model.activePolls(), (@limit or 50)
+      _take @model.activePolls(), (@limit or 50)
 
     startPoll: ->
       ModalService.open 'PollCommonStartModal', poll: =>

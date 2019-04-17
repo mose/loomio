@@ -8,6 +8,7 @@ import AuthService    from '@/shared/services/auth_service'
 import AbilityService from '@/shared/services/ability_service'
 
 import { hardReload } from '@/shared/helpers/window'
+import _forEach from 'lodash/forEach'
 
 export subscribeTo = (model) ->
   switch model.constructor.singular
@@ -19,7 +20,7 @@ export initLiveUpdate = ->
 
   if AbilityService.isLoggedIn()
     subscribeToUser()
-    _.each Session.user().groups(), subscribeToGroup
+    _forEach Session.user().groups(), subscribeToGroup
   else
     subscribeToMembership()
 

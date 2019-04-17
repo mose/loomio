@@ -2,6 +2,12 @@ import Records  from '@/shared/services/records'
 import Session  from '@/shared/services/session'
 import EventBus from '@/shared/services/event_bus'
 
+import _sortBy from 'lodash/sortBy'
+import _throttle from 'lodash/throttle'
+import _uniq from 'lodash/uniq'
+import _map from 'lodash/map'
+import _capitalize from 'lodash/capitalize'
+
 # A series of helpers for applying listeners to scope for events, such as an
 # emoji being added or a translation being completed
 export listenForMentions = ($scope, model) ->
@@ -12,11 +18,11 @@ export listenForMentions = ($scope, model) ->
       username = (u.username || "").toLowerCase()
       name.startsWith($scope.q) or username.startsWith($scope.q) or name.includes(" #{$scope.q}")
 
-    $scope.mentionables = _.sortBy(chain.data(), (u) -> (0 - Records.events.find(actorId: u.id).length))
+    $scope.mentionables = _sortBy(chain.data(), (u) -> (0 - Records.events.find(actorId: u.id).length))
 
-  fetchThenUpdate = _.throttle ->
+  fetchThenUpdate = _throttle ->
     Records.users.fetchMentionable($scope.q, model).then (response) ->
-      $scope.mentionableUserIds =  _.uniq($scope.mentionableUserIds.concat(_.map(response.users, 'id')))
+      $scope.mentionableUserIds =  _uniq($scope.mentionableUserIds.concat(_map(response.users, 'id')))
       updateMentionables()
   ,
     500
@@ -55,7 +61,7 @@ export listenForEmoji = ($scope, model, field, $element) ->
 export listenForReactions = ($scope, model) ->
   EventBus.listen $scope, 'emojiSelected', (_event, emoji) ->
     params =
-      reactableType: _.capitalize(model.constructor.singular)
+      reactableType: _capitalize(model.constructor.singular)
       reactableId:   model.id
       userId:        Session.user().id
 

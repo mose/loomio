@@ -6,7 +6,7 @@ export default
     pendingDismiss: null
   created: ->
     # EventBus.listen @, 'flashMessage', (event, flash) =>
-    #   @flash = _.merge flash, { visible: true }
+    #   @flash = _merge flash, { visible: true }
     #   @flash.message = @flash.message or 'common.action.loading' if @loading()
     #   $interval.cancel @pendingDismiss if @pendingDismiss?
     #   @pendingDismiss = $interval(@dismiss, flash.duration, 1)

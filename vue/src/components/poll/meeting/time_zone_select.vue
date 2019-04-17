@@ -25,6 +25,8 @@
 import AppConfig   from '@/shared/services/app_config'
 import EventBus    from '@/shared/services/event_bus'
 import TimeService from '@/shared/services/time_service'
+import _uniq from 'lodash/uniq'
+import _values from 'lodash/values'
 
 export default
   props:
@@ -35,7 +37,7 @@ export default
     dzone: @zone
   methods:
     names: ->
-      _.uniq(_.values(AppConfig.timeZones)).sort()
+      _uniq(_values(AppConfig.timeZones)).sort()
     selectChanged: ->
       EventBus.$emit @, 'timeZoneSelected', @dzone
 

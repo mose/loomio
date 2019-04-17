@@ -13,6 +13,7 @@
 <script lang="coffee">
 import { listenForTranslations } from '@/shared/helpers/listen'
 import { participantName }       from '@/shared/helpers/poll'
+import _sortBy from 'lodash/sortBy'
 
 export default
   props:
@@ -21,7 +22,7 @@ export default
     # listenForTranslations @
   computed:
     orderedStanceChoices: ->
-      _.sortBy @stance.stanceChoices(), 'rank'
+      _sortBy @stance.stanceChoices(), 'rank'
 
     participantName: -> participantName(@stance)
 </script>

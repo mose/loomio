@@ -1,5 +1,6 @@
+import _compact from 'lodash/compact'
 export audiencesFor = (model) ->
-  _.compact [
+  _compact [
     ('parent_group'     if model.isA('group')                         && model.parent()),
     ('formal_group'     if model.isA('discussion', 'poll', 'outcome') && model.group() && model.group().activeMembershipsCount() > 1),
     ('discussion_group' if model.isA('poll', 'outcome')               && model.discussion()),

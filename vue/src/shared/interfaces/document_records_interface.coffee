@@ -1,5 +1,6 @@
 import BaseRecordsInterface from '@/shared/record_store/base_records_interface'
 import DocumentModel        from '@/shared/models/document_model'
+import _capitalize from 'lodash/capitalize'
 
 export default class DocumentRecordsInterface extends BaseRecordsInterface
   model: DocumentModel
@@ -25,7 +26,7 @@ export default class DocumentRecordsInterface extends BaseRecordsInterface
   buildFromModel: (model) ->
     @build
       modelId:   model.id
-      modelType: _.capitalize model.constructor.singular
+      modelType: _capitalize model.constructor.singular
 
   upload: (file, progress) =>
     @remote.upload '', file,

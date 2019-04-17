@@ -1,6 +1,6 @@
 import BaseRecordsInterface from '@/shared/record_store/base_records_interface'
 import PollModel            from '@/shared/models/poll_model'
-
+import _merge from 'lodash/merge'
 export default class PollRecordsInterface extends BaseRecordsInterface
   model: PollModel
 
@@ -19,4 +19,4 @@ export default class PollRecordsInterface extends BaseRecordsInterface
       params: options
 
   fetchByGroup: (groupKey, options = {}) ->
-    @search _.merge(options, {group_key: groupKey})
+    @search _merge(options, {group_key: groupKey})

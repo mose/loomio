@@ -5,13 +5,14 @@ import LmoUrlService from '@/shared/services/lmo_url_service'
 import ModalService  from '@/shared/services/modal_service'
 
 import _isEmpty     from 'lodash/isEmpty'
+import _compact     from 'lodash/compact'
 
 export default
   data: ->
     group: Records.groups.build
       name: @$route.params.name
       customFields:
-        pending_emails: _.compact((@$route.params.pending_emails || "").split(','))
+        pending_emails: _compact((@$route.params.pending_emails || "").split(','))
 
   created: ->
     EventBus.$emit 'currentComponent', { page: 'startGroupPage', skipScroll: true }

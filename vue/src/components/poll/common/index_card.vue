@@ -2,6 +2,7 @@
 import Records       from '@/shared/services/records'
 import LmoUrlService from '@/shared/services/lmo_url_service'
 import { applyLoadingFunction } from '@/shared/helpers/apply'
+import _take from 'lodash/take'
 
 export default
   props:
@@ -25,7 +26,7 @@ export default
       LmoUrlService.params('status', 'closed')
 
     polls: ->
-      _.take @model.closedPolls(), (@limit or 50)
+      _take @model.closedPolls(), (@limit or 50)
 
 </script>
 

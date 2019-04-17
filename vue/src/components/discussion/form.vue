@@ -5,6 +5,7 @@ import { discussionPrivacy } from '@/shared/helpers/helptext'
 import { submitDiscussion } from '@/shared/helpers/form'
 import _map from 'lodash/map'
 import _sortBy from 'lodash/sortBy'
+import _filter from 'lodash/filter'
 
 export default
   props:
@@ -28,7 +29,7 @@ export default
 
   computed:
     availableGroups: ->
-      _.filter Session.user().formalGroups(), (group) ->
+      _filter Session.user().formalGroups(), (group) ->
         AbilityService.canStartThread(group)
 
     privacyPrivateDescription: ->

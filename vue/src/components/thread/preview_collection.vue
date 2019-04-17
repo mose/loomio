@@ -1,4 +1,7 @@
 <script lang="coffee">
+import _slice from 'lodash/slice'
+import _orderBy from 'lodash/orderBy'
+
 export default
   props:
     query: Object
@@ -12,7 +15,7 @@ export default
     threads: @query.threads()
   computed:
     orderedThreads: ->
-      _.slice(_.orderBy(@threads, @order), 0, @limit)
+      _slice(_orderBy(@threads, @order), 0, @limit)
 </script>
 
 <template lang="pug">

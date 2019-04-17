@@ -28,6 +28,10 @@ import ModalService   from '@/shared/services/modal_service'
 import urlFor         from '@/mixins/url_for'
 import truncate       from '@/mixins/truncate'
 import ConfirmModalMixin from '@/mixins/confirm_modal'
+import _filter        from 'lodash/filter'
+import _isEmpty       from 'lodash/isEmpty'
+import _orderBy       from 'lodash/orderBy'
+import _some          from 'lodash/some'
 
 export default
   mixins: [
@@ -61,16 +65,16 @@ export default
         flash:    'documents_page.document_removed'
   computed:
     documents: ->
-      _.filter @group.allDocuments(), (doc) =>
+      _filter @group.allDocuments(), (doc) =>
         return false  if @filter == 'group'   and doc.model() != @group
         return false  if @filter == 'content' and doc.model() == @group
-        _.isEmpty(@fragment) or doc.title.match(///#{@fragment}///i)
+        _isEmpty(@fragment) or doc.title.match(///#{@fragment}///i)
 
     orderedDocuments: ->
-      _.orderBy @documents, 'createdAt', 'desc'
+      _orderBy @documents, 'createdAt', 'desc'
 
     hasDocuments: ->
-      _.some @documents
+      _some @documents
 </script>
 
 <template lang="pug">

@@ -4,6 +4,11 @@ import AbilityService from '@/shared/services/ability_service'
 import ModalService   from '@/shared/services/modal_service'
 import RecordLoader   from '@/shared/services/record_loader'
 import fromNow        from '@/mixins/from_now'
+import isEmpty        from 'lodash/isEmpty'
+import filter         from 'lodash/filter'
+import includes       from 'lodash/includes'
+import slice          from 'lodash/slice'
+import min            from 'lodash/min'
 
 export default
   mixins: [fromNow]
@@ -46,24 +51,24 @@ export default
       @$nextTick => document.querySelector('.membership-card__search input').focus()
 
     showLoadMore: ->
-      @loader.numRequested < @recordCount() && _.isEmpty @fragment && !@loader.loading
+      @loader.numRequested < @recordCount() && _isEmpty @fragment && !@loader.loading
 
     canAddMembers: ->
       AbilityService.canAddMembers(@group.targetModel().group() || @group) && !@pending
 
     memberships: ->
-      if !_.isEmpty @fragment
-        _.filter @records(), (membership) =>
-          _.includes membership.userName().toLowerCase(), @fragment.toLowerCase()
+      if !_isEmpty @fragment
+        _filter @records(), (membership) =>
+          _includes membership.userName().toLowerCase(), @fragment.toLowerCase()
       else
         @records()
 
     orderedMemberships: ->
       limit = @loader.numRequested || 10
-      _.slice(_.orderBy(@memberships(), ['-admin', '-createdAt']), 0, limit)
+      _slice(_orderBy(@memberships(), ['-admin', '-createdAt']), 0, limit)
 
     recordsDisplayed: ->
-      _.min [@loader.numRequested, @recordCount()]
+      _min [@loader.numRequested, @recordCount()]
 
     initialFetch: ->
       @loader.fetchRecords(per: 4) unless @fetched
@@ -80,7 +85,7 @@ export default
         Records.announcements.buildFromModel(@group.targetModel())
 
     fetchMemberships: ->
-      return unless !_.isEmpty @fragment
+      return unless !_isEmpty @fragment
       Records.memberships.fetchByNameFragment(@fragment, @group.key)
 
     cardTitle: ->

@@ -24,6 +24,9 @@
 <script lang="coffee">
 import { fieldFromTemplate, myLastStanceFor } from '@/shared/helpers/poll'
 import urlFor                                 from '@/mixins/url_for'
+import _max from 'lodash/max'
+import _values from 'lodash/values'
+import _orderBy from 'lodash/orderBy'
 
 export default
   mixins: [urlFor]
@@ -35,7 +38,7 @@ export default
     barTextFor: (option) ->
       "#{this.countFor(option)} - #{option.name}".replace(/\s/g, '\u00a0')
     percentageFor: (option) ->
-      max = _.max(_.values(this.poll.stanceData))
+      max = _max(_values(this.poll.stanceData))
       return unless max > 0
       "#{100 * this.countFor(option) / max}%"
     backgroundImageFor: (option) ->
@@ -45,7 +48,7 @@ export default
       'background-size': "#{this.percentageFor(option)} 100%"
   computed:
     orderedPollOptions: ->
-      _.orderBy(this.poll.pollOptions(), ['priority'])
+      _orderBy(this.poll.pollOptions(), ['priority'])
 </script>
 
 <template>

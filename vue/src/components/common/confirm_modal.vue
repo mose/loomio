@@ -1,6 +1,7 @@
 <script lang="coffee">
 import FlashService  from '@/shared/services/flash_service'
 import LmoUrlService from '@/shared/services/lmo_url_service'
+import _merge from 'lodash/merge'
 
 export default
   props:
@@ -22,7 +23,7 @@ export default
       .finally =>
         @isDisabled = false
 
-      _.merge @, confirm.scope # not sure why this is necessary
+      _merge @, confirm.scope # not sure why this is necessary
 </script>
 
 <template lang="pug">
